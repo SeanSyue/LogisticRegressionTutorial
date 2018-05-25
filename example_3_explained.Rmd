@@ -1,0 +1,110 @@
+---
+title: "Example 3 Explained"
+author: "Yu-Chen Xue"
+date: "Apr 25, 2018"
+header-includes:
+  \usepackage{ctex}
+output:
+  pdf_document:
+    latex_engine: xelatex
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Example 3 -- UCBAdmission Explained
+
+#### 1. UCBAdmissions資料集的Overview
+UCBAdmissions是儲存為3D array格式的資料集，這裡先將UCBAdmissions轉換為dataframe，並命名為ucb_df，以直觀地展示這個資料集
+```{r}
+ucb_df <- data.frame(UCBAdmissions)
+ucb_df
+```
+
+製作UCBAdmissions資料集的‘flat’ contingency tables，並指定欄"Admit"為比較的目標欄
+```{r}
+ftable(UCBAdmissions, col.vars="Admit")
+```
+
+顯示UCBAdmissions資料集中解釋變數的組成
+```{r}
+dimnames(UCBAdmissions)
+```
+
+顯示UCBAdmissions資料集的margin table（一個顯示某個欄位的各個數值的個數的表格），這裡選取UCBAdmissions的第1個解釋變數(Admit)相對第2個解釋變數(Gender)的個數
+```{r}
+margin.table(UCBAdmissions, c(2,1))
+```
+
+顯示UCBAdmissions資料集的margin table，這裡選取UCBAdmissions的第1個解釋變數(Admit)相對第3個解釋變數(Dept)的個數
+```{r}
+margin.table(UCBAdmissions, c(3,1))
+```
+
+顯示UCBAdmissions資料集的margin table，這裡選取UCBAdmissions的第3個解釋變數(Dept)相對第2個解釋變數(Gender)的個數
+```{r}
+margin.table(UCBAdmissions, c(2,3))
+```
+
+#### 2. 對UCBAdmissions資料集進行建模、分析
+以另一種方法展現這個資料集，將Admit拆分為yes和no兩種情況
+```{r}
+### begin copying here
+ucb.df = data.frame(gender=rep(c("Male","Female"),c(6,6)),
+                    dept=rep(LETTERS[1:6],2),
+                    yes=c(512,353,120,138,53,22,89,17,202,131,94,24),
+                    no=c(313,207,205,279,138,351,19,8,391,244,299,317))
+### end copying here and paste into the R Console
+
+ucb.df
+```
+
+將yes/no作為響應變數，Gender * Dept作為解釋變數，對UCBAdmission資料集構建廣義線性模型，其中family=binomial(logit)表示指定使用邏輯回歸。
+```{r}
+mod.form = "cbind(yes,no) ~ gender * dept"     # mind the quotes here!
+glm.out = glm(mod.form, family=binomial(logit), data=ucb.df)
+```
+
+對模型作anova表格，test="Chisq"表示指定使用Chi Square方法進行分析
+```{r}
+anova(glm.out, test="Chisq")
+```
+
+對模型作summary表格
+```{r}
+summary(glm.out)
+```
+
+計算genderMale的期望值的exponential
+```{r}
+exp(-1.0521)
+```
+
+計算genderMale的期望值的exponential的相反數
+```{r}
+1/exp(-1.0521)
+```
+
+計算deptC的期望值的exponential
+```{r}
+exp(-2.2046)
+```
+
+將上面的兩個exponential數值相除，得到genderMale:deptD的近似值
+```{r}
+exp(-2.2046) / exp(-2.1662)          # C:A / D:A leaves C:D
+```
+
+將yes/no作為響應變數，Gender * Dept作為解釋變數，對UCBAdmission資料集構建邏輯回歸模型，並對該模型作anova表格進行分析
+```{r}
+mod.form="cbind(yes,no) ~ dept + gender"
+glm.out=glm(mod.form, family=binomial(logit), data=ucb.df) 
+anova(glm.out, test="Chisq")
+```
+
+對模型作summary表格進行分析
+```{r}
+summary(glm.out)
+```
