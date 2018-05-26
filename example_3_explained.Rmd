@@ -14,42 +14,42 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Example 3 -- UCBAdmission Explained
+# Example 3 -- UCBAdmission Explained
 
-#### 1. UCBAdmissions資料集的Overview
-UCBAdmissions是儲存為3D array格式的資料集，這裡先將UCBAdmissions轉換為dataframe，並命名為ucb_df，以直觀地展示這個資料集
+## 1. UCBAdmissions資料集的Overview
+#### UCBAdmissions是儲存為3D array格式的資料集，這裡先將UCBAdmissions轉換為dataframe，並命名為ucb_df，以直觀地展示這個資料集
 ```{r}
 ucb_df <- data.frame(UCBAdmissions)
 ucb_df
 ```
 
-製作UCBAdmissions資料集的‘flat’ contingency tables，並指定欄"Admit"為比較的目標欄
+#### 製作UCBAdmissions資料集的‘flat’ contingency tables，並指定欄"Admit"為比較的目標欄
 ```{r}
 ftable(UCBAdmissions, col.vars="Admit")
 ```
 
-顯示UCBAdmissions資料集中解釋變數的組成
+#### 顯示UCBAdmissions資料集中解釋變數的組成
 ```{r}
 dimnames(UCBAdmissions)
 ```
 
-顯示UCBAdmissions資料集的margin table（一個顯示某個欄位的各個數值的個數的表格），這裡選取UCBAdmissions的第1個解釋變數(Admit)相對第2個解釋變數(Gender)的個數
+#### 顯示UCBAdmissions資料集的margin table（一個顯示某個欄位的各個數值的個數的表格），這裡選取UCBAdmissions的第1個解釋變數(Admit)相對第2個解釋變數(Gender)的個數
 ```{r}
 margin.table(UCBAdmissions, c(2,1))
 ```
 
-顯示UCBAdmissions資料集的margin table，這裡選取UCBAdmissions的第1個解釋變數(Admit)相對第3個解釋變數(Dept)的個數
+#### 顯示UCBAdmissions資料集的margin table，這裡選取UCBAdmissions的第1個解釋變數(Admit)相對第3個解釋變數(Dept)的個數
 ```{r}
 margin.table(UCBAdmissions, c(3,1))
 ```
 
-顯示UCBAdmissions資料集的margin table，這裡選取UCBAdmissions的第3個解釋變數(Dept)相對第2個解釋變數(Gender)的個數
+#### 顯示UCBAdmissions資料集的margin table，這裡選取UCBAdmissions的第3個解釋變數(Dept)相對第2個解釋變數(Gender)的個數
 ```{r}
 margin.table(UCBAdmissions, c(2,3))
 ```
 
-#### 2. 對UCBAdmissions資料集進行建模、分析
-以另一種方法展現這個資料集，將Admit拆分為yes和no兩種情況
+## 2. 對UCBAdmissions資料集進行建模、分析
+#### 以另一種方法展現這個資料集，將Admit拆分為yes和no兩種情況
 ```{r}
 ### begin copying here
 ucb.df = data.frame(gender=rep(c("Male","Female"),c(6,6)),
@@ -61,50 +61,57 @@ ucb.df = data.frame(gender=rep(c("Male","Female"),c(6,6)),
 ucb.df
 ```
 
-將yes/no作為響應變數，Gender * Dept作為解釋變數，對UCBAdmission資料集構建廣義線性模型，其中family=binomial(logit)表示指定使用邏輯回歸。
+#### 將yes/no作為響應變數，Gender * Dept作為解釋變數，對UCBAdmission資料集構建廣義線性模型，其中family=binomial(logit)表示指定使用邏輯回歸。
 ```{r}
 mod.form = "cbind(yes,no) ~ gender * dept"     # mind the quotes here!
 glm.out = glm(mod.form, family=binomial(logit), data=ucb.df)
 ```
 
-對模型作anova表格，test="Chisq"表示指定使用Chi Square方法進行分析
+#### 對模型作anova表格，test="Chisq"表示在輸出的表格中加上Pr(>Chi)一欄
+可以看到"gender"和"detp"對學生是否被錄取都很有關係
 ```{r}
 anova(glm.out, test="Chisq")
 ```
 
-對模型作summary表格
+#### 對模型作summary表格
+其中z-value為Critical value，
+"genderMale:deptB"的期望值表示若同時為gemderMale和deptB，則計算這種情況的ln(odds)的式子需要額外考慮這一項，即1.5442-1.0521-0.7904+0.8321
+"Residual deviance: 1.0791e-13  on  0  degrees of freedom"說明該模型很完善地解釋了這個資料集
 ```{r}
 summary(glm.out)
 ```
 
-計算genderMale的期望值的exponential
+#### 計算genderMale的勝算(Odds)
 ```{r}
 exp(-1.0521)
 ```
 
-計算genderMale的期望值的exponential的相反數
+#### 計算genderMale的「賠率」
 ```{r}
 1/exp(-1.0521)
 ```
 
-計算deptC的期望值的exponential
+#### 計算deptC的勝算(Odds)
 ```{r}
 exp(-2.2046)
 ```
 
-將上面的兩個exponential數值相除，得到genderMale:deptD的近似值
+#### 將上面的兩個勝算(Odds)數值相除，得到genderMale:deptD的勝算(Odds)
 ```{r}
 exp(-2.2046) / exp(-2.1662)          # C:A / D:A leaves C:D
 ```
 
-將yes/no作為響應變數，Gender * Dept作為解釋變數，對UCBAdmission資料集構建邏輯回歸模型，並對該模型作anova表格進行分析
+#### 將yes/no作為響應變數，Gender * Dept作為解釋變數，對UCBAdmission資料集構建邏輯回歸模型，並對該模型作anova表格進行分析
+在這個模型下，"gender"對結果沒有什麼貢獻
 ```{r}
 mod.form="cbind(yes,no) ~ dept + gender"
 glm.out=glm(mod.form, family=binomial(logit), data=ucb.df) 
 anova(glm.out, test="Chisq")
 ```
 
-對模型作summary表格進行分析
+#### 對模型作summary表格進行分析
+"genderMale"對結果沒什麼貢獻
+"Residual deviance:  20.204  on  5  degrees of freedom"說明這個模型的解釋能力不如前面的模型
 ```{r}
 summary(glm.out)
 ```

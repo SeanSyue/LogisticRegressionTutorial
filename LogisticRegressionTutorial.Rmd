@@ -199,7 +199,6 @@ ftable(UCBAdmissions, col.vars="Admit")
 
 ```{r}
 dimnames(UCBAdmissions)
-
 ```
 
 ```{r}
@@ -223,8 +222,6 @@ ucb.df = data.frame(gender=rep(c("Male","Female"),c(6,6)),
 ### end copying here and paste into the R Console
 
 ucb.df
-
-
 ```
 
 ```{r}
@@ -234,7 +231,6 @@ glm.out = glm(mod.form, family=binomial(logit), data=ucb.df)
 
 ```{r}
 anova(glm.out, test="Chisq")
-
 ```
 
 ```{r}
@@ -248,13 +244,13 @@ exp(-1.0521)
 ```{r}
 1/exp(-1.0521)
 ```
+
 ```{r}
 exp(-2.2046)
 ```
 
 ```{r}
 exp(-2.2046) / exp(-2.1662)          # C:A / D:A leaves C:D
-
 ```
 
 ```{r}

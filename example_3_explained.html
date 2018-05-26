@@ -125,11 +125,12 @@ $(document).ready(function () {
 </div>
 
 
-<div id="example-3-ucbadmission-explained" class="section level2">
-<h2>Example 3 – UCBAdmission Explained</h2>
-<div id="ucbadmissionsoverview" class="section level4">
-<h4>1. UCBAdmissions資料集的Overview</h4>
-<p>UCBAdmissions是儲存為3D array格式的資料集，這裡先將UCBAdmissions轉換為dataframe，並命名為ucb_df，以直觀地展示這個資料集</p>
+<div id="example-3-ucbadmission-explained" class="section level1">
+<h1>Example 3 – UCBAdmission Explained</h1>
+<div id="ucbadmissionsoverview" class="section level2">
+<h2>1. UCBAdmissions資料集的Overview</h2>
+<div id="ucbadmissions3d-arrayucbadmissionsdataframeucb_df" class="section level4">
+<h4>UCBAdmissions是儲存為3D array格式的資料集，這裡先將UCBAdmissions轉換為dataframe，並命名為ucb_df，以直觀地展示這個資料集</h4>
 <pre class="r"><code>ucb_df &lt;- data.frame(UCBAdmissions)
 ucb_df</code></pre>
 <pre><code>##       Admit Gender Dept Freq
@@ -157,7 +158,9 @@ ucb_df</code></pre>
 ## 22 Rejected   Male    F  351
 ## 23 Admitted Female    F   24
 ## 24 Rejected Female    F  317</code></pre>
-<p>製作UCBAdmissions資料集的‘flat’ contingency tables，並指定欄“Admit”為比較的目標欄</p>
+</div>
+<div id="ucbadmissionsflat-contingency-tablesadmit" class="section level4">
+<h4>製作UCBAdmissions資料集的‘flat’ contingency tables，並指定欄“Admit”為比較的目標欄</h4>
 <pre class="r"><code>ftable(UCBAdmissions, col.vars=&quot;Admit&quot;)</code></pre>
 <pre><code>##             Admit Admitted Rejected
 ## Gender Dept                        
@@ -173,7 +176,9 @@ ucb_df</code></pre>
 ##        D               131      244
 ##        E                94      299
 ##        F                24      317</code></pre>
-<p>顯示UCBAdmissions資料集中解釋變數的組成</p>
+</div>
+<div id="ucbadmissions" class="section level4">
+<h4>顯示UCBAdmissions資料集中解釋變數的組成</h4>
 <pre class="r"><code>dimnames(UCBAdmissions)</code></pre>
 <pre><code>## $Admit
 ## [1] &quot;Admitted&quot; &quot;Rejected&quot;
@@ -183,13 +188,17 @@ ucb_df</code></pre>
 ## 
 ## $Dept
 ## [1] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot; &quot;E&quot; &quot;F&quot;</code></pre>
-<p>顯示UCBAdmissions資料集的margin table（一個顯示某個欄位的各個數值的個數的表格），這裡選取UCBAdmissions的第1個解釋變數(Admit)相對第2個解釋變數(Gender)的個數</p>
+</div>
+<div id="ucbadmissionsmargin-tableucbadmissions1admit2gender" class="section level4">
+<h4>顯示UCBAdmissions資料集的margin table（一個顯示某個欄位的各個數值的個數的表格），這裡選取UCBAdmissions的第1個解釋變數(Admit)相對第2個解釋變數(Gender)的個數</h4>
 <pre class="r"><code>margin.table(UCBAdmissions, c(2,1))</code></pre>
 <pre><code>##         Admit
 ## Gender   Admitted Rejected
 ##   Male       1198     1493
 ##   Female      557     1278</code></pre>
-<p>顯示UCBAdmissions資料集的margin table，這裡選取UCBAdmissions的第1個解釋變數(Admit)相對第3個解釋變數(Dept)的個數</p>
+</div>
+<div id="ucbadmissionsmargin-tableucbadmissions1admit3dept" class="section level4">
+<h4>顯示UCBAdmissions資料集的margin table，這裡選取UCBAdmissions的第1個解釋變數(Admit)相對第3個解釋變數(Dept)的個數</h4>
 <pre class="r"><code>margin.table(UCBAdmissions, c(3,1))</code></pre>
 <pre><code>##     Admit
 ## Dept Admitted Rejected
@@ -199,16 +208,20 @@ ucb_df</code></pre>
 ##    D      269      523
 ##    E      147      437
 ##    F       46      668</code></pre>
-<p>顯示UCBAdmissions資料集的margin table，這裡選取UCBAdmissions的第3個解釋變數(Dept)相對第2個解釋變數(Gender)的個數</p>
+</div>
+<div id="ucbadmissionsmargin-tableucbadmissions3dept2gender" class="section level4">
+<h4>顯示UCBAdmissions資料集的margin table，這裡選取UCBAdmissions的第3個解釋變數(Dept)相對第2個解釋變數(Gender)的個數</h4>
 <pre class="r"><code>margin.table(UCBAdmissions, c(2,3))</code></pre>
 <pre><code>##         Dept
 ## Gender     A   B   C   D   E   F
 ##   Male   825 560 325 417 191 373
 ##   Female 108  25 593 375 393 341</code></pre>
 </div>
-<div id="ucbadmissions" class="section level4">
-<h4>2. 對UCBAdmissions資料集進行建模、分析</h4>
-<p>以另一種方法展現這個資料集，將Admit拆分為yes和no兩種情況</p>
+</div>
+<div id="ucbadmissions" class="section level2">
+<h2>2. 對UCBAdmissions資料集進行建模、分析</h2>
+<div id="admityesno" class="section level4">
+<h4>以另一種方法展現這個資料集，將Admit拆分為yes和no兩種情況</h4>
 <pre class="r"><code>### begin copying here
 ucb.df = data.frame(gender=rep(c(&quot;Male&quot;,&quot;Female&quot;),c(6,6)),
                     dept=rep(LETTERS[1:6],2),
@@ -230,10 +243,15 @@ ucb.df</code></pre>
 ## 10 Female    D 131 244
 ## 11 Female    E  94 299
 ## 12 Female    F  24 317</code></pre>
-<p>將yes/no作為響應變數，Gender * Dept作為解釋變數，對UCBAdmission資料集構建廣義線性模型，其中family=binomial(logit)表示指定使用邏輯回歸。</p>
+</div>
+<div id="yesnogender-deptucbadmissionfamilybinomiallogit" class="section level4">
+<h4>將yes/no作為響應變數，Gender * Dept作為解釋變數，對UCBAdmission資料集構建廣義線性模型，其中family=binomial(logit)表示指定使用邏輯回歸。</h4>
 <pre class="r"><code>mod.form = &quot;cbind(yes,no) ~ gender * dept&quot;     # mind the quotes here!
 glm.out = glm(mod.form, family=binomial(logit), data=ucb.df)</code></pre>
-<p>對模型作anova表格，test=“Chisq”表示指定使用Chi Square方法進行分析</p>
+</div>
+<div id="anovatestchisqprchi" class="section level4">
+<h4>對模型作anova表格，test=“Chisq”表示在輸出的表格中加上Pr(&gt;Chi)一欄</h4>
+<p>可以看到“gender”和“detp”對學生是否被錄取都很有關係</p>
 <pre class="r"><code>anova(glm.out, test=&quot;Chisq&quot;)</code></pre>
 <pre><code>## Analysis of Deviance Table
 ## 
@@ -251,7 +269,10 @@ glm.out = glm(mod.form, family=binomial(logit), data=ucb.df)</code></pre>
 ## gender:dept  5    20.20         0       0.00  0.001144 ** 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
-<p>對模型作summary表格</p>
+</div>
+<div id="summary" class="section level4">
+<h4>對模型作summary表格</h4>
+<p>其中z-value為Critical value， “genderMale:deptB”的期望值表示若同時為gemderMale和deptB，則計算這種情況的ln(odds)的式子需要額外考慮這一項，即1.5442-1.0521-0.7904+0.8321 “Residual deviance: 1.0791e-13 on 0 degrees of freedom”說明該模型很完善地解釋了這個資料集</p>
 <pre class="r"><code>summary(glm.out)</code></pre>
 <pre><code>## 
 ## Call:
@@ -284,19 +305,30 @@ glm.out = glm(mod.form, family=binomial(logit), data=ucb.df)</code></pre>
 ## AIC: 92.94
 ## 
 ## Number of Fisher Scoring iterations: 3</code></pre>
-<p>計算genderMale的期望值的exponential</p>
+</div>
+<div id="gendermaleodds" class="section level4">
+<h4>計算genderMale的勝算(Odds)</h4>
 <pre class="r"><code>exp(-1.0521)</code></pre>
 <pre><code>## [1] 0.3492037</code></pre>
-<p>計算genderMale的期望值的exponential的相反數</p>
+</div>
+<div id="gendermale" class="section level4">
+<h4>計算genderMale的「賠率」</h4>
 <pre class="r"><code>1/exp(-1.0521)</code></pre>
 <pre><code>## [1] 2.863658</code></pre>
-<p>計算deptC的期望值的exponential</p>
+</div>
+<div id="deptcodds" class="section level4">
+<h4>計算deptC的勝算(Odds)</h4>
 <pre class="r"><code>exp(-2.2046)</code></pre>
 <pre><code>## [1] 0.1102946</code></pre>
-<p>將上面的兩個exponential數值相除，得到genderMale:deptD的近似值</p>
+</div>
+<div id="oddsgendermaledeptdodds" class="section level4">
+<h4>將上面的兩個勝算(Odds)數值相除，得到genderMale:deptD的勝算(Odds)</h4>
 <pre class="r"><code>exp(-2.2046) / exp(-2.1662)          # C:A / D:A leaves C:D</code></pre>
 <pre><code>## [1] 0.9623279</code></pre>
-<p>將yes/no作為響應變數，Gender * Dept作為解釋變數，對UCBAdmission資料集構建邏輯回歸模型，並對該模型作anova表格進行分析</p>
+</div>
+<div id="yesnogender-deptucbadmissionanova" class="section level4">
+<h4>將yes/no作為響應變數，Gender * Dept作為解釋變數，對UCBAdmission資料集構建邏輯回歸模型，並對該模型作anova表格進行分析</h4>
+<p>在這個模型下，“gender”對結果沒有什麼貢獻</p>
 <pre class="r"><code>mod.form=&quot;cbind(yes,no) ~ dept + gender&quot;
 glm.out=glm(mod.form, family=binomial(logit), data=ucb.df) 
 anova(glm.out, test=&quot;Chisq&quot;)</code></pre>
@@ -315,7 +347,10 @@ anova(glm.out, test=&quot;Chisq&quot;)</code></pre>
 ## gender  1     1.53         5      20.20   0.2159    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
-<p>對模型作summary表格進行分析</p>
+</div>
+<div id="summary" class="section level4">
+<h4>對模型作summary表格進行分析</h4>
+<p>“genderMale”對結果沒什麼貢獻 “Residual deviance: 20.204 on 5 degrees of freedom”說明這個模型的解釋能力不如前面的模型</p>
 <pre class="r"><code>summary(glm.out)</code></pre>
 <pre><code>## 
 ## Call:
@@ -346,6 +381,7 @@ anova(glm.out, test=&quot;Chisq&quot;)</code></pre>
 ## AIC: 103.14
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
+</div>
 </div>
 </div>
 
