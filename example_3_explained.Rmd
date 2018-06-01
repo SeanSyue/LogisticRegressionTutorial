@@ -1,13 +1,13 @@
 ---
 title: "Example 3 Explained"
 author: "Yu-Chen Xue"
-date: "Apr 25, 2018"
+date: "May 31, 2018"
 header-includes:
   \usepackage{ctex}
 output:
+  html_document: default
   pdf_document:
     latex_engine: xelatex
-  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -75,7 +75,7 @@ anova(glm.out, test="Chisq")
 
 #### 對模型作summary表格
 其中z-value為Critical value，
-"genderMale:deptB"的期望值表示若同時為gemderMale和deptB，則計算這種情況的ln(odds)的式子需要額外考慮這一項，即1.5442-1.0521-0.7904+0.8321
+"genderMale:deptB"的期望值反應同時為gemderMale和deptB的錄取率
 "Residual deviance: 1.0791e-13  on  0  degrees of freedom"說明該模型很完善地解釋了這個資料集
 ```{r}
 summary(glm.out)

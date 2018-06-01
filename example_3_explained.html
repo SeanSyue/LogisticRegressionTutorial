@@ -11,6 +11,7 @@
 
 <meta name="author" content="Yu-Chen Xue" />
 
+<meta name="date" content="2018-05-31" />
 
 <title>Example 3 Explained</title>
 
@@ -120,7 +121,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Example 3 Explained</h1>
 <h4 class="author"><em>Yu-Chen Xue</em></h4>
-<h4 class="date"><em>Apr 25, 2018</em></h4>
+<h4 class="date"><em>May 31, 2018</em></h4>
 
 </div>
 
@@ -272,7 +273,7 @@ glm.out = glm(mod.form, family=binomial(logit), data=ucb.df)</code></pre>
 </div>
 <div id="summary" class="section level4">
 <h4>對模型作summary表格</h4>
-<p>其中z-value為Critical value， “genderMale:deptB”的期望值表示若同時為gemderMale和deptB，則計算這種情況的ln(odds)的式子需要額外考慮這一項，即1.5442-1.0521-0.7904+0.8321 “Residual deviance: 1.0791e-13 on 0 degrees of freedom”說明該模型很完善地解釋了這個資料集</p>
+<p>其中z-value為Critical value， “genderMale:deptB”的期望值反應同時為gemderMale和deptB的錄取率 “Residual deviance: 1.0791e-13 on 0 degrees of freedom”說明該模型很完善地解釋了這個資料集</p>
 <pre class="r"><code>summary(glm.out)</code></pre>
 <pre><code>## 
 ## Call:
